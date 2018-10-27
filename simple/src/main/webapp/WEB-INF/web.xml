@@ -11,7 +11,17 @@
 
     <servlet-mapping>
         <servlet-name>Hello world</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/helloWorld</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Session info</servlet-name>
+        <servlet-class>com.github.jvanheesch.SessionInfoServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Session info</servlet-name>
+        <url-pattern>/sessionInfo</url-pattern>
     </servlet-mapping>
 
 </web-app>
