@@ -8,6 +8,7 @@
         <servlet-class>com.github.jvanheesch.HelloWorldServlet</servlet-class>
     </servlet>
 
+    <!--http://localhost:8080/simple/helloWorld-->
     <servlet-mapping>
         <servlet-name>Hello world</servlet-name>
         <url-pattern>/helloWorld</url-pattern>
@@ -18,6 +19,7 @@
         <servlet-class>com.github.jvanheesch.SessionInfoServlet</servlet-class>
     </servlet>
 
+    <!--http://localhost:8080/simple/sessionInfo-->
     <servlet-mapping>
         <servlet-name>Session info</servlet-name>
         <url-pattern>/sessionInfo</url-pattern>
