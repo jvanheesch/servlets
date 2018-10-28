@@ -25,6 +25,17 @@
         <url-pattern>/sessionInfo</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>RequestReturned</servlet-name>
+        <servlet-class>com.github.jvanheesch.RequestReturnedServlet</servlet-class>
+    </servlet>
+
+    <!--http://localhost:8080/simple/requestReturned-->
+    <servlet-mapping>
+        <servlet-name>RequestReturned</servlet-name>
+        <url-pattern>/requestReturned</url-pattern>
+    </servlet-mapping>
+
     <!--Does not matter that this is declared below servlets-->
     <filter>
         <filter-name>RequestLoggingFilter</filter-name>
