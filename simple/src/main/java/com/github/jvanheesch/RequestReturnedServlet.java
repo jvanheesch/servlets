@@ -11,8 +11,6 @@ public class RequestReturnedServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try (PrintWriter writer = resp.getWriter()) {
-            // when doing a post with postman, the response
-            // contains a header content-length with size == IOUtils.BUFFER_SIZE.
             writer.write(new String(IOUtils.read(req.getInputStream())));
         }
     }

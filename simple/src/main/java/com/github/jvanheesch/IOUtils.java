@@ -1,23 +1,28 @@
 package com.github.jvanheesch;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public final class IOUtils {
-    public static final int BUFFER_SIZE = 1024;
-
     private IOUtils() {
     }
 
+    /**
+     * See https://stackoverflow.com/a/35446009/1939921.
+     */
     public static byte[] read(InputStream inputStream) throws IOException {
-        try (ByteArrayOutputStream result = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[BUFFER_SIZE];
-            int length;
-            while ((length = inputStream.read(buffer)) != -1) {
-                result.write(buffer, 0, length);
+        try (
+                BufferedInputStream bis = new BufferedInputStream(inputStream);
+                ByteArrayOutputStream buf = new ByteArrayOutputStream()
+        ) {
+            int result = bis.read();
+            while (result != -1) {
+                buf.write((byte) result);
+                result = bis.read();
             }
-            return buffer;
+            return buf.toByteArray();
         }
     }
 }
