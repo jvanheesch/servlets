@@ -12,6 +12,16 @@ public class ResponseLoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            PrintWriter printWriter = new PrintWriter(byteArrayOutputStream) {
+                @Override
+                public void close() {
+                    super.close();
+
+                    System.out.println("Closed printWriter, stracktrace: ");
+                    new Exception().printStackTrace(System.out);
+                }
+            };
+
             chain.doFilter(request, new HttpServletResponseWrapper((HttpServletResponse) response) {
                 @Override
                 public ServletOutputStream getOutputStream() {
@@ -20,7 +30,8 @@ public class ResponseLoggingFilter implements Filter {
 
                 @Override
                 public PrintWriter getWriter() {
-                    return new PrintWriter(byteArrayOutputStream);
+                    // should probably always return same writer.
+                    return printWriter;
                 }
             });
 
