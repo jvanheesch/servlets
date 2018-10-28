@@ -10,7 +10,7 @@ public class RequestLoggingFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try (ServletInputStream inputStream = request.getInputStream()) {
-            byte[] input = read(inputStream);
+            byte[] input = IOUtils.read(inputStream);
 
             String requestAsString = new String(input);
             System.out.println("<requestAsString>");
@@ -41,17 +41,6 @@ public class RequestLoggingFilter implements Filter {
                     },
                     response
             );
-        }
-    }
-
-    private static byte[] read(InputStream inputStream) throws IOException {
-        try (ByteArrayOutputStream result = new ByteArrayOutputStream()) {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) != -1) {
-                result.write(buffer, 0, length);
-            }
-            return buffer;
         }
     }
 }
