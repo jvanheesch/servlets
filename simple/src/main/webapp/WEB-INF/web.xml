@@ -24,4 +24,15 @@
         <servlet-name>SessionInfo</servlet-name>
         <url-pattern>/sessionInfo</url-pattern>
     </servlet-mapping>
+
+    <!--Does not matter that this is declared below servlets-->
+    <filter>
+        <filter-name>LoggingFilter</filter-name>
+        <filter-class>com.github.jvanheesch.ResponseLoggingFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>LoggingFilter</filter-name>
+        <servlet-name>HelloWorld</servlet-name>
+    </filter-mapping>
 </web-app>
