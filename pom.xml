@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>simple</module>
-        <module>wicket</module>
-        <module>spring-boot</module>
         <module>async</module>
+        <module>simple</module>
+        <module>spring-boot</module>
+        <module>wicket</module>
     </modules>
 
     <properties>
