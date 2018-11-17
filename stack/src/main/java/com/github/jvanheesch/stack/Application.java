@@ -30,4 +30,21 @@ public class Application {
         registration.setOrder(2);
         return registration;
     }
+
+    @Bean
+    public FilterRegistrationBean<SomeFilterWhichWrapsRequest> someFilterWhichWrapsRequest() {
+        FilterRegistrationBean<SomeFilterWhichWrapsRequest> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new SomeFilterWhichWrapsRequest());
+        registration.addUrlPatterns("/someAsyncServlet");
+        registration.setOrder(3);
+        return registration;
+    }
+    @Bean
+    public FilterRegistrationBean<SomeFilterWhichUnwrapsRequest> someFilterWhichUnwrapsRequest() {
+        FilterRegistrationBean<SomeFilterWhichUnwrapsRequest> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new SomeFilterWhichUnwrapsRequest());
+        registration.addUrlPatterns("/someAsyncServlet");
+        registration.setOrder(4);
+        return registration;
+    }
 }
