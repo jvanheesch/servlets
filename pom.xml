@@ -13,6 +13,7 @@
         <module>simple</module>
         <module>wicket</module>
         <module>spring-boot</module>
+        <module>async</module>
     </modules>
 
     <properties>
