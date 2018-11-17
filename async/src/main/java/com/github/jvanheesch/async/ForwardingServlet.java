@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "HtmlServlet", urlPatterns = "/html")
-public class HtmlServlet extends HttpServlet {
+@WebServlet(name = "ForwardingServlet", urlPatterns = "/forwarding")
+public class ForwardingServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/HelloWorld.html").forward(request, response);
+        request.getRequestDispatcher("/including").forward(request, response);
     }
 }
