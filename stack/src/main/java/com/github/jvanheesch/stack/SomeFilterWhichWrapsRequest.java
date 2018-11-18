@@ -1,5 +1,8 @@
 package com.github.jvanheesch.stack;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpFilter;
@@ -17,13 +20,17 @@ import java.io.IOException;
  * The latter happens when the requestWrapper object is used by the async process.
  */
 public class SomeFilterWhichWrapsRequest extends HttpFilter {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        LOGGER.info("SomeFilterWhichWrapsRequest - start.");
         response.getWriter().write("SomeFilterWhichWrapsRequest - start. \n");
         MyHttpServletRequestWrapper requestWrapper = new MyHttpServletRequestWrapper(request);
         chain.doFilter(requestWrapper, response);
         response.getWriter().write("SomeFilterWhichWrapsRequest: requestWrapper.getAsyncContext().hasOriginalRequestAndResponse(): " + requestWrapper.getAsyncContext().hasOriginalRequestAndResponse() + "\n");
         response.getWriter().write("SomeFilterWhichWrapsRequest - end. \n");
+        LOGGER.info("SomeFilterWhichWrapsRequest - end.");
     }
 
     private static class MyHttpServletRequestWrapper extends HttpServletRequestWrapper {
