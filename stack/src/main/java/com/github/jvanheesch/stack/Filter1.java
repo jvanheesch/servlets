@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 public class Filter1 implements Filter {
@@ -12,9 +13,14 @@ public class Filter1 implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         LOGGER.info("Filter1 - start.");
-        response.getWriter().write("Filter1 - start. \n");
-        chain.doFilter(request, response);
-        response.getWriter().write("Filter1 - end. \n");
+        String path = ((HttpServletRequest) request).getRequestURI();
+        if (path.startsWith("/favicon")) {
+            chain.doFilter(request, response); // Just continue chain.
+        } else {
+            response.getWriter().write("Filter1 - start. \n");
+            chain.doFilter(request, response);
+            response.getWriter().write("Filter1 - end. \n");
+        }
         LOGGER.info("Filter1 - end.");
     }
 }
