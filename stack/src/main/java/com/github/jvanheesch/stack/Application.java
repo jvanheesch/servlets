@@ -31,6 +31,12 @@ public class Application {
         return registration;
     }
 
+    /**
+     * http://localhost:8080/someAsyncServletWhichForwardsToUnwrapper
+     * -> hasOriginalRequestAndResponse() is false: unwrap happens AFTER async started.
+     * http://localhost:8080/someAsyncServletWhichUnwraps
+     * -> hasOriginalRequestAndResponse() is true: unwrap happens BEFORE async started.
+     */
     @Bean
     public FilterRegistrationBean<SomeFilterWhichWrapsRequest> someFilterWhichWrapsRequest() {
         FilterRegistrationBean<SomeFilterWhichWrapsRequest> registration = new FilterRegistrationBean<>();
