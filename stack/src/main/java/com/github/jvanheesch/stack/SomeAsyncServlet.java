@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * EDIT2: No longer broken, and I don't think I changed anything ...
  * EDIT: even /someServlet is failing, so it's something else...
  * TODO: this IS failing: container tries to call filter again, which results in error:
  * <p>
