@@ -6,6 +6,9 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
 
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+
 @ServletComponentScan
 @SpringBootApplication
 public class Application {
@@ -19,6 +22,7 @@ public class Application {
         registration.setFilter(new Filter1());
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
+        registration.setDispatcherTypes(EnumSet.allOf(DispatcherType.class));
         return registration;
     }
 
