@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * EDIT: even /someServlet is failing, so it's something else...
  * TODO: this IS failing: container tries to call filter again, which results in error:
  * <p>
  * 10:54:17.425 [http-nio-8080-exec-1] INFO  com.github.jvanheesch.stack.Filter1 - Filter1 - start.
