@@ -25,6 +25,7 @@ public class InspectorFilter extends HttpFilter {
         PrintWriter writer = response.getWriter();
         writer.write("InspectorFilter - start. \n");
         writer.write(String.format("RequestURI: %s \n", request.getRequestURI()));
+        writer.write(String.format("Method: %s \n", request.getMethod()));
         writer.write(String.format("ContextPath: %s \n", request.getContextPath()));
         writer.write(String.format("ContentType: %s \n", request.getContentType()));
         writer.write(String.format("CharacterEncoding: %s \n", request.getCharacterEncoding()));
