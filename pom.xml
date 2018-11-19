@@ -11,6 +11,7 @@
 
     <modules>
         <module>async</module>
+        <module>data</module>
         <module>simple</module>
         <module>spring-boot</module>
         <module>stack</module>
