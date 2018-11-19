@@ -15,15 +15,15 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-@WebFilter(urlPatterns = "/inspect")
-public class InspectorFilter extends HttpFilter {
+@WebFilter(urlPatterns = "/info")
+public class InfoFilter extends HttpFilter {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        LOGGER.info("InspectorFilter - start.");
+        LOGGER.info("InfoFilter - start.");
         PrintWriter writer = response.getWriter();
-        writer.write("InspectorFilter - start. \n");
+        writer.write("InfoFilter - start. \n");
         writer.write(String.format("RequestURI: %s \n", request.getRequestURI()));
         writer.write(String.format("Method: %s \n", request.getMethod()));
         writer.write(String.format("ContextPath: %s \n", request.getContextPath()));
@@ -78,6 +78,6 @@ public class InspectorFilter extends HttpFilter {
         // TODO_JORIS: getServletRegistrations
         // TODO_JORIS: getFilterRegistrations
 //        writer.write(String.format("  ContextPath: %s \n", servletContext.getContextPath()));
-        LOGGER.info("InspectorFilter - end.");
+        LOGGER.info("InfoFilter - end.");
     }
 }
