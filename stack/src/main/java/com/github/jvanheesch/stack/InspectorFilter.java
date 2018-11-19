@@ -55,13 +55,13 @@ public class InspectorFilter extends HttpFilter {
         Enumeration<String> attributeNames = request.getAttributeNames();
         while (attributeNames.hasMoreElements()) {
             String attributeName = attributeNames.nextElement();
-            writer.write(String.format("  %s: %s \n", attributeName, request.getHeader(attributeName)));
+            writer.write(String.format("  %s: %s \n", attributeName, request.getAttribute(attributeName)));
         }
         writer.write("Parameters    : \n");
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String paramName = parameterNames.nextElement();
-            writer.write(String.format("  %s: %s \n", paramName, request.getHeader(paramName)));
+            writer.write(String.format("  %s: %s \n", paramName, request.getParameter(paramName)));
         }
         ServletContext servletContext = request.getServletContext();
         writer.write(String.format("ServletContext: %s \n", servletContext));
