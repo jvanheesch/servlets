@@ -13,6 +13,7 @@ import java.util.EnumSet;
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
+        System.setProperty("server.servlet.context-path", "/ctx");
         SpringApplication.run(Application.class, args);
     }
 
