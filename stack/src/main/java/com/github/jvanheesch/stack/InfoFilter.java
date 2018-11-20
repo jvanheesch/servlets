@@ -15,7 +15,18 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.Enumeration;
 
-@WebFilter(urlPatterns = "/info")
+/**
+ * http://localhost:8080/ctx/info/:
+ * ContextPath: /ctx
+ * ServletPath: /info
+ * PathInfo: null
+ * <p>
+ * http://localhost:8080/ctx/info/test:
+ * ContextPath: /ctx
+ * ServletPath: /info/test
+ * PathInfo: null
+ */
+@WebFilter(urlPatterns = "/info/*")
 public class InfoFilter extends HttpFilter {
     private static final Logger LOGGER = LogManager.getLogger();
 
