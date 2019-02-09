@@ -3,9 +3,7 @@ package com.github.jvanheesch.async;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -31,8 +29,33 @@ public class AsyncFilter extends HttpFilter {
         String destPath = requestPath.replace(URL_PATTERN, "");
 
         AsyncContext asyncContext = request.startAsync();
+
+        asyncContext.addListener(new LoggingAsyncListener());
+
         asyncContext.dispatch(destPath);
 
         LOGGER.info("End doFilter, threadID: {}.", Thread.currentThread().getId());
+    }
+
+    private static class LoggingAsyncListener implements AsyncListener {
+        @Override
+        public void onComplete(AsyncEvent event) throws IOException {
+            LOGGER.info("onComplete");
+        }
+
+        @Override
+        public void onTimeout(AsyncEvent event) throws IOException {
+            LOGGER.info("onTimeout");
+        }
+
+        @Override
+        public void onError(AsyncEvent event) throws IOException {
+            LOGGER.info("onError");
+        }
+
+        @Override
+        public void onStartAsync(AsyncEvent event) throws IOException {
+            LOGGER.info("onStartAsync");
+        }
     }
 }
