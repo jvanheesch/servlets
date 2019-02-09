@@ -17,8 +17,8 @@ import java.io.IOException;
  * See https://stackoverflow.com/questions/10073392/whats-the-purpose-of-asynccontext-start-in-servlet-3-0/
  * and https://dzone.com/articles/limited-usefulness.
  */
-@WebServlet(name = "SleepyServlet", urlPatterns = "/sleepy", asyncSupported = true)
-public class SleepyServlet extends HttpServlet {
+@WebServlet(name = "AsyncSleepyServlet", urlPatterns = "/asyncSleepy", asyncSupported = true)
+public class AsyncSleepyServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
