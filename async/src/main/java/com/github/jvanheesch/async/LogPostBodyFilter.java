@@ -3,9 +3,7 @@ package com.github.jvanheesch.async;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
+import javax.servlet.*;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -28,28 +26,58 @@ public class LogPostBodyFilter extends HttpFilter {
         LOGGER.info("Begin doFilter, threadID: {}.", Thread.currentThread().getId());
 
         if (request.getMethod().equals("POST")) {
-            try (
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    // log "lazily", i.e.: log to baos while input is being read, log baos afterwards.
-                    ServletInputStream is = new InterceptorServletInputStream(request.getInputStream(), baos);
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is))
-            ) {
-                HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(request) {
+            // log "lazily", i.e.: log to baos while input is being read, log baos afterwards.
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ServletInputStream is = new InterceptorServletInputStream(request.getInputStream(), baos);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
+
+            HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(request) {
+                @Override
+                public BufferedReader getReader() throws IOException {
+                    return bufferedReader;
+                }
+
+                @Override
+                public ServletInputStream getInputStream() throws IOException {
+                    return is;
+                }
+            };
+
+            chain.doFilter(wrappedRequest, response);
+
+            if (wrappedRequest.isAsyncStarted()) {
+                wrappedRequest.getAsyncContext().addListener(new AsyncListener() {
                     @Override
-                    public BufferedReader getReader() throws IOException {
-                        return bufferedReader;
+                    public void onComplete(AsyncEvent event) throws IOException {
+                        baos.close();
+                        bufferedReader.close(); // also closes is
+
+                        String postBody = new String(baos.toByteArray());
+                        LOGGER.info("PostBody: {}.", postBody);
                     }
 
                     @Override
-                    public ServletInputStream getInputStream() throws IOException {
-                        return is;
-                    }
-                };
+                    public void onTimeout(AsyncEvent event) throws IOException {
 
-                chain.doFilter(wrappedRequest, response);
-                String postBody = new String(baos.toByteArray());
-                LOGGER.info("PostBody: {}.", postBody);
+                    }
+
+                    @Override
+                    public void onError(AsyncEvent event) throws IOException {
+
+                    }
+
+                    @Override
+                    public void onStartAsync(AsyncEvent event) throws IOException {
+
+                    }
+                });
+            } else {
+                baos.close();
+                bufferedReader.close(); // also closes is
             }
+
+            String postBody = new String(baos.toByteArray());
+            LOGGER.info("PostBody: {}.", postBody);
         } else {
             chain.doFilter(request, response);
         }

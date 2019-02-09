@@ -63,7 +63,6 @@ public class InterceptorServletInputStream extends ForwardingServletInputStream 
         return nextByteAsInt;
     }
 
-    // TODO_JORIS: called 2x: once for is.close(), once for reader.close().
     @Override
     public void close() throws IOException {
         super.close();
