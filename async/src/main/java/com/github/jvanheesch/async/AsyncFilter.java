@@ -26,7 +26,7 @@ public class AsyncFilter extends HttpFilter {
 
         String destPath = requestPath.replace(URL_PATTERN, "");
 
-        AsyncContext asyncContext = request.startAsync();
+        AsyncContext asyncContext = request.startAsync(request, response);
 
         asyncContext.addListener(new LoggingAsyncListener());
 
