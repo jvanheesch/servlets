@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.stream.Collectors;
 
 // example: curl http://localhost:8080/post -d '{"abc": "def"}' -H "Content-Type: application/json"
-@WebServlet(name = "ReturnPostBodyServlet", urlPatterns = "/post")
+@WebServlet(name = "ReturnPostBodyServlet", urlPatterns = "/post", asyncSupported = true)
 public class ReturnPostBodyServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
