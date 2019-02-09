@@ -27,6 +27,8 @@ public class LogPostBodyFilter extends HttpFilter {
      */
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        LOGGER.info("Begin doFilter, threadID: {}.", Thread.currentThread().getId());
+
         if (request.getMethod().equals("POST")) {
             try (
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -53,5 +55,7 @@ public class LogPostBodyFilter extends HttpFilter {
         } else {
             chain.doFilter(request, response);
         }
+
+        LOGGER.info("End doFilter, threadID: {}.", Thread.currentThread().getId());
     }
 }
