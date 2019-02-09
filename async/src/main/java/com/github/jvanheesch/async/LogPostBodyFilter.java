@@ -28,11 +28,12 @@ public class LogPostBodyFilter extends HttpFilter {
         LOGGER.info("Begin doFilter, threadID: {}.", Thread.currentThread().getId());
 
         if (request.getMethod().equals("POST")) {
+            // log "lazily", i.e.: log to baos while input is being read, log baos afterwards.
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ServletInputStream is = new InterceptorServletInputStream(request.getInputStream(), baos);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
             try (
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    // log "lazily", i.e.: log to baos while input is being read, log baos afterwards.
-                    ServletInputStream is = new InterceptorServletInputStream(request.getInputStream(), baos);
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is))
+                    ByteArrayOutputStream baosx = new ByteArrayOutputStream();
             ) {
                 HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(request) {
                     @Override
