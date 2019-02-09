@@ -6,9 +6,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 
 @ServletComponentScan
 @SpringBootApplication
-public class Application {
-    // http://localhost:8080/example/
+public class AsyncApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(AsyncApplication.class, args);
     }
 }
