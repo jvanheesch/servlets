@@ -5,24 +5,53 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.stream.Collectors;
+import java.io.InputStreamReader;
 
 @WebFilter(urlPatterns = "/post")
 public class LogPostBodyFilter extends HttpFilter {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * IMPORTANT NOTE: Since WE create the baos, is, bufferedReader, it is OUR responsibility to close these.
+     * We close them right after chain.doFilter(), which WON'T WORK IN ASYNC mode
+     * (which is fine, given that @WebFilter's asyncSupported defaults to false).
+     */
     @Override
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         if (request.getMethod().equals("POST")) {
-            String postBody = request.getReader().lines().collect(Collectors.joining("\n"));
-            LOGGER.info("PostBody: {}.", postBody);
-        }
+            try (
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    // log "lazily", i.e.: log to baos while input is being read, log baos afterwards.
+                    ServletInputStream is = new InterceptorServletInputStream(request.getInputStream(), baos);
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is))
+            ) {
+                HttpServletRequest wrappedRequest = new HttpServletRequestWrapper(request) {
+                    @Override
+                    public BufferedReader getReader() throws IOException {
+                        return bufferedReader;
+                    }
 
-        chain.doFilter(request, response);
+                    @Override
+                    public ServletInputStream getInputStream() throws IOException {
+                        return is;
+                    }
+                };
+
+                chain.doFilter(wrappedRequest, response);
+                String postBody = new String(baos.toByteArray());
+                LOGGER.info("PostBody: {}.", postBody);
+            }
+        } else {
+            chain.doFilter(request, response);
+        }
     }
 }
