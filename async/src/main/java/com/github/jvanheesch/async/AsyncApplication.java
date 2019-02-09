@@ -19,7 +19,7 @@ public class AsyncApplication {
         FilterRegistrationBean<LogPostBodyFilter> filterRegistrationBean = new FilterRegistrationBean<>(new LogPostBodyFilter());
         filterRegistrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         filterRegistrationBean.setAsyncSupported(false);
-        filterRegistrationBean.addUrlPatterns("/post");
+        filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
 
